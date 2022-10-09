@@ -1,0 +1,248 @@
+/* executar comando de intalação do sass no projeto ants de começar na pasta do projeto:
+$ sass style.scss:style.css */
+
+/* pra que ele fique sempre compilando o que está escrito no sass é só rodar no terminal o comando $ sass --watch style.scss:style.css  */
+
+/// comentários com 3 barras servem para documentações (também não vai para o css)
+/* criando as variáveis para s cores no sass */
+$purple: #a050be;
+$light-grey: #eaeaeb;
+$dark-grey: #464646;
+$yellow: #fabe50;
+// cria variável para os tamanhos também
+$img-width: 45%;
+// para chamar essa interpolação: #{$img-width}
+
+// criando variáveis com configurações para usar elas
+%no-decoration {text-decoration: none;}
+// para chamar: @extend %no-decoration;
+
+%u-decoration{text-decoration: underline;}
+
+/* criando uma variável de vários códigos */
+@mixin reset-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* para chamar essa variável:  @include reset-list; */
+
+/* criando tipo uma função que recebe parâmetros. essa função coloca sempre o display flex, mas o justfy-content pode variar o valor, por isso essas propriedades que variam, são passadas como argumento passadas   */
+@mixin flx($property, $jty-cnt) {
+  display: flex;
+  #{$property}: $jty-cnt;
+}
+// para chamar: @include flx(justify-content, center)
+
+
+/* usando @mixin com @media query */
+@mixin for-phone-only {
+  @media (max-width: 767.98px) {@content;}
+}
+
+@mixin for-tablet-only {
+  @media (min-width: 768px) and (max-width: 1199.98px) { @content;}
+}
+
+@mixin for-desktop-only {
+  @media (min-width: 1200px) { @content; }
+}
+
+/* transforma px em rem */
+@function calculateRem($size) {
+    @return $size / 16px * 1rem;
+}
+// pra chamar: @include fontSize(14px);
+
+@mixin fontSize($size) {
+    font-size: calculateRem($size);
+}
+
+/* importando os arquivos de referencia pra o scss */
+@import 'header', 'footer', 'about', 'article', 'collection', 'contact';
+
+$directions: top, bottom, left, right;
+$layout-margin-size: 10px;
+
+@each $direction in $directions {
+    %no-margin-#{$direction} {margin-#{$direction}: 0;}
+    %default-margin-#{$direction} {margin-#{$direction}: $layout-margin-size;}
+    %double-margin-#{$direction} {margin-#{$direction}: $layout-margin-size * 2;}
+    %half-margin-#{$direction} {margin-#{$direction}: $layout-margin-size / 2;}
+}
+// pra chamar: 	@extend %default-margin-top, %double-margin-bottom;
+
+.main {
+	display: flex;
+	justify-content: wrap;
+  flex-wrap: wrap;
+	font-family: Arial, Helvetica, sans-serif;
+
+	// o nome desse & aqui no sass é parent selector
+	&_content {
+    @include for-phone-only {
+      width: 100%;
+    }
+		width: 70%;
+		padding: 40px 8px;
+	}
+
+	&__post {
+		text-align: center;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	&__title {
+		text-decoration: none;
+		@include fontSize(22px);
+    color: $dark-grey;
+		letter-spacing: 1.5;
+		&:hover {
+			color: $purple;
+		}
+	}
+
+	&__subtitle {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@extend %default-margin-top, 
+		%double-margin-bottom;
+	}
+
+	&__date {
+		@extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
+		font-size: 12px;
+		font-style: italic;
+	}
+
+	&__tag {
+		font-size: 14px;
+		padding: 5px 7px;
+		color: $purple;
+		border: 1px solid $purple;
+		@extend %no-margin-top, %no-margin-bottom, %default-margin-left, %default-margin-right;
+	}
+
+	&__details {
+		border: 1px solid $light-grey;
+	}
+
+  &__img {
+			width: 100%;
+	}
+
+  &__description {
+    padding: 40px 0 25px;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 14px;
+  }
+
+  &__btn {
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 1.5;
+    color: $purple;
+    background-color: $yellow;
+    padding: 10px 20ox;
+    &:hover {
+      color: $yellow;
+      background-color: $purple;
+    }
+  }
+
+  &__info {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-top: 1px solid $light-grey;
+			margin-top: 30px;
+		}
+
+  &__author {
+    width: 50%;
+    border-right: 1px solid $light-grey;
+    margin-top: 30px;
+  }
+
+  &__p {
+    font-size: 14px;
+    color: $dark-grey;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__comments {
+    width: 50%;
+  }
+
+  &__a {
+    text-decoration: none;
+    font-size: 14px;
+    color: $dark-grey;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    &__hover {
+      color: $purple;
+    }
+  }
+
+  &__sidebar {
+        width: 25%;
+        padding: 40px 10px;
+    }
+
+  .sidebar {
+        &__top {
+            border: 1px solid $light-grey;
+            padding: 15px 20px;
+        }
+
+        &__title {
+            background-color: $yellow;
+            text-align: center;
+            padding: 10px 20px;
+            margin: 0;
+            letter-spacing: 1.5px;
+        }
+        &__posts {
+          @include reset-list;
+        }
+
+        &__list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 15px 0;
+            &:not(:last-child) {
+                border-bottom: 1px dashed $light-grey;
+            }
+        }
+        &__img {
+            width: 40%;
+        }
+        &__details {
+            width: 50%;
+            padding-left: 10px;
+        }
+        &__post-title {
+            font-size: 14px;
+            color: $purple;
+            @extend %no-decoration;
+
+            &:hover {
+                @extend %u-decoration;
+            }
+        }
+        &__post-date {
+            font-size: 12px;
+            margin: 5px 0 0 0;
+        }
+    }
+}
+

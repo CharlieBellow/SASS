@@ -1,0 +1,25 @@
+/* Este trecho de estilo se refere 
+ao rodapé do nosso blog.
+
+* esse trecho de estilo se refere ao rodapé do blog inteiro */
+
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    // Este trecho de estilo posiciona o footer na parte de baixo da nossa tela.
+    // esse trecho de estilo posiciona o footer na parte de baixo da nossa tela (esse comentário que só funciona em uma linha não é compilado no css. só o comentário que é assim: /*  */
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &__logo {
+        max-width: 100px;
+    }
+
+    &__txt {
+        margin: auto;
+        @include fontSize(14px);
+    }
+}
